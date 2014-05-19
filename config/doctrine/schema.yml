@@ -1,0 +1,27 @@
+Key:
+  actAs:
+    - Timestampable
+    - Signable
+    - Versionable
+  columns:
+    name:
+      type: string(255)
+      notnull: true
+
+Machine:
+  actAs:
+    - Timestampable
+    - Signable
+    - Versionable
+  columns:
+    key_id:
+      type: integer
+      notnull: true
+    name:
+      type: string(255)
+      notnull: true
+  relations:
+    Key:
+      local: key_id
+      foreign: id
+      foreignAlias: Machines
