@@ -20,11 +20,6 @@
         <a href="<?php echo url_for('@homepage') ?>" class="brand"><?php echo $_SERVER['SERVER_NAME'] ?></a>
 
         <ul class="nav">
-          <li><a href="<?php echo url_for('default/error404') ?>">Test 404</a></li>
-          <li><a href="<?php echo url_for('default/disabled') ?>">Test disabled</a></li>
-          <li><a href="<?php echo url_for('default/login') ?>">Test login</a></li>
-          <li><a href="<?php echo url_for('default/module') ?>">Test module</a></li>
-          <li><a href="<?php echo url_for('default/secure') ?>">Test secure</a></li>
         </ul>
 
         <ul class="nav pull-right"><?php if ($sf_user->isAuthenticated()): ?>

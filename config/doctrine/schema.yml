@@ -7,6 +7,15 @@ Key:
     name:
       type: string(255)
       notnull: true
+    product:
+      type: string(255)
+      notnull: true
+  relations:
+    Machines:
+      class: Machine
+      local: id
+      foreign: key_id
+      type: many
 
 Machine:
   actAs:
@@ -20,8 +29,3 @@ Machine:
     name:
       type: string(255)
       notnull: true
-  relations:
-    Key:
-      local: key_id
-      foreign: id
-      foreignAlias: Machines

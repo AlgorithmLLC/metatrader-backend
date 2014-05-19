@@ -1,0 +1,8 @@
+new:
+  credentials: [[can_create_keys]]
+
+edit:
+  credentials: [[can_edit_keys]]
+
+delete:
+  credentials: [[can_delete_keys]]
