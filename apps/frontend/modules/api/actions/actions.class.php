@@ -52,10 +52,10 @@ class apiActions extends sfActions
       ->fetchOne()
     ;
 
-    $this->errorUnless($key, "No such key for that product registered");
+    if (true == ($error = $this->errorUnless($key and $key->getId(), "No such key for that product registered"))) return $error;
 
     $machine = Doctrine_Core::getTable("Machine")->findOneByName($this->machine);
-    return $this->errorUnless(!($machine and $machine->getKeyId() === $key->getId()), "This machine is already registered");
+    if (true == ($error = $this->errorIf($machine and $machine->getKeyId() === $key->getId(), "This machine is already registered"))) return $error;
 
     $machine = Machine::createFromArray([
       "name" => $this->machine,
@@ -91,6 +91,10 @@ class apiActions extends sfActions
     ]);
   }
 
+  protected function errorIf($condition, $message)
+  {
+    return $this->errorUnless(!$condition, $message);
+  }
   protected function renderMessage(array $message)
   {
     $this->getResponse()->setStatusCode(isset($message["status"]) && $message["status"] === "OK" ? 200 : 400);
