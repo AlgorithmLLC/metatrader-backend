@@ -1,0 +1,8 @@
+new:
+  credentials: [[can_create_products]]
+
+edit:
+  credentials: [[can_edit_products]]
+
+delete:
+  credentials: [[can_delete_products]]

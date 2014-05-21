@@ -7,15 +7,17 @@ Key:
     name:
       type: string(255)
       notnull: true
-    product:
-      type: string(255)
+      unique: true
+    product_id:
+      type: integer
       notnull: true
-  relations:
-    Machines:
-      class: Machine
-      local: id
-      foreign: key_id
-      type: many
+    machine_id:
+      type: integer
+    buyer_id:
+      type: integer
+    pool_id:
+      type: integer
+      notnull: true
 
 Machine:
   actAs:
@@ -23,9 +25,65 @@ Machine:
     - Signable
     - Versionable
   columns:
-    key_id:
-      type: integer
-      notnull: true
     name:
       type: string(255)
       notnull: true
+      unique: true
+  relations:
+    Keys:
+      class: Key
+      local: id
+      foreign: machine_id
+      type: many
+
+Product:
+  actAs:
+    - Timestampable
+    - Signable
+    - Versionable
+  columns:
+    name:
+      type: string(255)
+      notnull: true
+    metaname:
+      type: string(255)
+      notnull: true
+      unique: true
+    description:
+      type: clob
+      notnull: true
+    package:
+      type: string(255)
+      notnull: true
+  relations:
+    Keys:
+      class: Key
+      local: id
+      foreign: product_id
+      type: many
+
+Pool:
+  actAs:
+    - Timestampable
+    - Signable
+    - Versionable
+  columns:
+    name:
+      type: string(255)
+      notnull: true
+    description:
+      type: clob
+  relations:
+    Keys:
+      class: Key
+      local: id
+      foreign: pool_id
+      type: many
+
+sfGuardUser:
+  relations:
+    Keys:
+      class: Key
+      local: id
+      foreign: buyer_id
+      type: many

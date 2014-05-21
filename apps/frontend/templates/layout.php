@@ -19,8 +19,12 @@
       <div class="container">
         <a href="<?php echo url_for('@homepage') ?>" class="brand"><?php echo $_SERVER['SERVER_NAME'] ?></a>
 
-        <ul class="nav">
-        </ul>
+        <ul class="nav"><?php if ($sf_user->isAuthenticated()): ?>
+          <li><a href="<?php echo url_for("product/index"); ?>">Продукты</a></li>
+          <li><a href="<?php echo url_for("key/index"); ?>">Ключи</a></li>
+          <li><a href="<?php echo url_for("machine/index"); ?>">Машины</a></li>
+          <li><a href="<?php echo url_for("pool/index"); ?>">Пулы</a></li>
+        <?php endif ?></ul>
 
         <ul class="nav pull-right"><?php if ($sf_user->isAuthenticated()): ?>
           <li class="dropdown">

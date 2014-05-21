@@ -19,5 +19,11 @@ class MachineForm extends BaseMachineForm
       , $this["updated_by"]
       , $this["version"]
     );
+
+    $this->getWidgetSchema()
+      ->setLabels([
+        "name" => "Id машины",
+      ])
+    ;
   }
 }

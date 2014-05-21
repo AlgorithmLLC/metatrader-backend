@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Key form.
+ * Pool form.
  *
  * @package    metatrader-backend
  * @subpackage form
  * @author     Anatoly Pashin
  * @version    SVN: $Id: sfDoctrineFormTemplate.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
-class KeyForm extends BaseKeyForm
+class PoolForm extends BasePoolForm
 {
   public function configure()
   {
@@ -21,12 +21,12 @@ class KeyForm extends BaseKeyForm
     );
 
     $this->getWidgetSchema()
+      ->offsetGet("description")
+        ->setAttribute("class", "input-block-level")
+        ->getParent()
       ->setLabels([
-        "name" => "Ключ",
-        "product_id" => "Продукт",
-        "machine_id" => "Машина",
-        "buyer_id" => "Покупатель",
-        "pool_id" => "Пул",
+        "name" => "Наименование",
+        "description" => "Описание",
       ])
     ;
   }

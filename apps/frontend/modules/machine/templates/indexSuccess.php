@@ -14,7 +14,6 @@
   <thead>
     <tr>
       <th>Id</th>
-      <th>Key</th>
       <th>Name</th>
       <th>Created at</th>
       <th>Updated at</th>
@@ -26,7 +25,6 @@
   <tbody><?php foreach ($machines as $machine): ?>
     <tr>
       <td><a href="<?php echo url_for('machine/edit?id='.$machine->getId()) ?>"><?php echo $machine->getId() ?></a></td>
-      <td><?php echo $machine->getKeyId() ?></td>
       <td><?php echo $machine->getName() ?></td>
       <td><?php echo $machine->getCreatedAt() ?></td>
       <td><?php echo $machine->getUpdatedAt() ?></td>

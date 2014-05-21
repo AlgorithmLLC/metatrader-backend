@@ -1,0 +1,8 @@
+new:
+  credentials: [[can_create_pools]]
+
+edit:
+  credentials: [[can_edit_pools]]
+
+delete:
+  credentials: [[can_delete_pools]]
