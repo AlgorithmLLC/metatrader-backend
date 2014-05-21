@@ -13,7 +13,7 @@ class apiActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     return $this->renderMessage([
-      "status" => "OK",
+      "status" => "SUCCESS",
       "message" => "Hello from API",
     ]);
   }
@@ -23,17 +23,17 @@ class apiActions extends sfActions
     if (true == ($error = $this->checkRequest())) return $error;
 
     $result = Doctrine_Query::create()
-      ->from("Key k")
-      ->innerJoin("k.Machines m")
-      ->addWhere("k.name = ?", $this->key)
-      ->addWhere("k.product = ?", $this->product)
+      ->from("Product p")
+      ->innerJoin("p.Keys k")
+      ->innerJoin("k.Machine m")
+      ->addWhere("p.metaname = ?", $this->product)
       ->addWhere("m.name = ?", $this->machine)
       ->limit(1)
       ->fetchOne()
     ;
 
     return $this->renderMessage($result && $result->getId() ? [
-      "status" => "OK",
+      "status" => "SUCCESS",
       "message" => "This machine is already registered",
     ] : [
       "message" => "This machine is not registered yet",
@@ -64,7 +64,7 @@ class apiActions extends sfActions
     $machine->save();
 
     return $this->renderMessage($machine && $machine->getId() ? [
-      "status" => "OK",
+      "status" => "SUCCESS",
       "message" => "This machine is registered now",
     ] : [
       "message" => "Error registering this machine",
@@ -76,17 +76,16 @@ class apiActions extends sfActions
   {
     $request = $this->getRequest();
 
-    $this->key = $request->getParameter("key");
     $this->product = $request->getParameter("product");
     $this->machine = $request->getParameter("machine");
 
-    return $this->errorUnless($this->key and $this->product and $this->machine, "Please provide key, product and machine");
+    return $this->errorUnless($this->product and $this->machine, "Please provide key, product and machine");
   }
 
   protected function errorUnless($condition, $message)
   {
     return $condition ? false : $this->renderMessage([
-      "status" => "ERROR",
+      "status" => "FAIL",
       "message" => $message
     ]);
   }
@@ -97,13 +96,18 @@ class apiActions extends sfActions
   }
   protected function renderMessage(array $message)
   {
-    $this->getResponse()->setStatusCode(isset($message["status"]) && $message["status"] === "OK" ? 200 : 400);
+    $this->getResponse()->setStatusCode(isset($message["status"]) && $message["status"] === "SUCCESS" ? 200 : 400);
 
-    $this->renderText(json_encode(array_merge([
-      "status" => "ERROR",
+    /*$this->renderText(json_encode(array_merge([
+      "status" => "FAIL",
       "message" => "Not implemented",
     ], $message), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
-    return sfView::NONE;
+    return sfView::NONE;*/
+
+    die(array_merge([
+      "status" => "FAIL",
+      "message" => "Not implemented",
+    ], $message)["status"]);
   }
 }
