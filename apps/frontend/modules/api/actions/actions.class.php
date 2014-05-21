@@ -44,26 +44,51 @@ class apiActions extends sfActions
   {
     if (true == ($error = $this->checkRequest())) return $error;
 
+    $product = Doctrine_Query::create()
+      ->from("Product p")
+      ->addWhere("p.metaname = ?", $this->product)
+      ->limit(1)
+      ->fetchOne()
+    ;
+    if (true == ($error = $this->errorUnless($product and $product->getId(), "No such product registered", "WRONG PRODUCT"))) return $error;
+
     $key = Doctrine_Query::create()
       ->from("Key k")
       ->addWhere("k.name = ?", $this->key)
-      ->addWhere("k.product = ?", $this->product)
+      ->addWhere("k.product_id = ?", $product->getId())
       ->limit(1)
       ->fetchOne()
     ;
 
-    if (true == ($error = $this->errorUnless($key and $key->getId(), "No such key for that product registered"))) return $error;
+    if (true == ($error = $this->errorUnless($key and $key->getId(), "No such key for that product registered", "WRONG KEY"))) return $error;
 
-    $machine = Doctrine_Core::getTable("Machine")->findOneByName($this->machine);
-    if (true == ($error = $this->errorIf($machine and $machine->getKeyId() === $key->getId(), "This machine is already registered"))) return $error;
+    $machine = Doctrine_Query::create()
+      ->from("Machine m")
+      ->addWhere("m.name = ?", $this->machine)
+      ->limit(1)
+      ->fetchOne()
+    ;
 
-    $machine = Machine::createFromArray([
-      "name" => $this->machine,
-      "key_id" => $key->getId(),
-    ]);
-    $machine->save();
+    if (!$machine or !$machine->getId()) {
+      $machine = Machine::createFromArray([
+        "name" => $this->machine,
+      ]);
+      $machine->save();
+    }
 
-    return $this->renderMessage($machine && $machine->getId() ? [
+    $result = Doctrine_Query::create()
+      ->from("Key k")
+      ->addWhere("k.id = ?", $key->getId())
+      ->addWhere("k.product_id = ?", $product->getId())
+      ->addWhere("k.machine_id = ?", $machine->getId())
+      ->limit(1)
+      ->fetchOne()
+    ;
+    if (true == ($error = $this->errorIf($result and $result->getId(), "This machine is already registered", "SUCCESS"))) return $error;
+
+    $result = $key->setMachineId($machine->getId())->save();
+
+    return $this->renderMessage($result ? [
       "status" => "SUCCESS",
       "message" => "This machine is registered now",
     ] : [
@@ -76,23 +101,24 @@ class apiActions extends sfActions
   {
     $request = $this->getRequest();
 
+    $this->key = $request->getParameter("key");
     $this->product = $request->getParameter("product");
     $this->machine = $request->getParameter("machine");
 
     return $this->errorUnless($this->product and $this->machine, "Please provide key, product and machine");
   }
 
-  protected function errorUnless($condition, $message)
+  protected function errorUnless($condition, $message, $status="FAIL")
   {
     return $condition ? false : $this->renderMessage([
-      "status" => "FAIL",
+      "status" => $status,
       "message" => $message
     ]);
   }
 
-  protected function errorIf($condition, $message)
+  protected function errorIf($condition, $message, $status="FAIL")
   {
-    return $this->errorUnless(!$condition, $message);
+    return $this->errorUnless(!$condition, $message, $status);
   }
   protected function renderMessage(array $message)
   {
