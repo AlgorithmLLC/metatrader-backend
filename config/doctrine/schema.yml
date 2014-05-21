@@ -73,6 +73,9 @@ Pool:
       notnull: true
     description:
       type: clob
+    buyer_id:
+      type: integer
+      notnull: true
   relations:
     Keys:
       class: Key
@@ -84,6 +87,11 @@ sfGuardUser:
   relations:
     Keys:
       class: Key
+      local: id
+      foreign: buyer_id
+      type: many
+    Pools:
+      class: Pool
       local: id
       foreign: buyer_id
       type: many

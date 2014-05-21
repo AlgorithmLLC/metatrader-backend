@@ -19,7 +19,6 @@
       <th>Updated at</th>
       <th>Created by</th>
       <th>Updated by</th>
-      <th>Version</th>
     </tr>
   </thead>
   <tbody><?php foreach ($machines as $machine): ?>
@@ -28,9 +27,8 @@
       <td><?php echo $machine->getName() ?></td>
       <td><?php echo $machine->getCreatedAt() ?></td>
       <td><?php echo $machine->getUpdatedAt() ?></td>
-      <td><?php echo $machine->getCreatedBy() ?></td>
-      <td><?php echo $machine->getUpdatedBy() ?></td>
-      <td><?php echo $machine->getVersion() ?></td>
+      <td><?php echo $machine->getCreator() ?></td>
+      <td><?php echo $machine->getUpdator() ?></td>
     </tr>
   <?php endforeach; ?></tbody>
 </table>

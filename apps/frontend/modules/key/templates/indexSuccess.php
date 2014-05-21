@@ -23,7 +23,6 @@
       <th>Updated at</th>
       <th>Created by</th>
       <th>Updated by</th>
-      <th>Version</th>
     </tr>
   </thead>
   <tbody><?php foreach ($keys as $key): ?>
@@ -36,9 +35,8 @@
       <td><?php echo $key->getPoolId() ?></td>
       <td><?php echo $key->getCreatedAt() ?></td>
       <td><?php echo $key->getUpdatedAt() ?></td>
-      <td><?php echo $key->getCreatedBy() ?></td>
-      <td><?php echo $key->getUpdatedBy() ?></td>
-      <td><?php echo $key->getVersion() ?></td>
+      <td><?php echo $key->getCreator() ?></td>
+      <td><?php echo $key->getUpdator() ?></td>
     </tr>
   <?php endforeach; ?></tbody>
 </table>

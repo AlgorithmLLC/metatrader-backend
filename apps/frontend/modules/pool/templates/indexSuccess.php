@@ -20,7 +20,6 @@
       <th>Updated at</th>
       <th>Created by</th>
       <th>Updated by</th>
-      <th>Version</th>
     </tr>
   </thead>
   <tbody><?php foreach ($pools as $pool): ?>
@@ -30,9 +29,8 @@
       <td><?php echo truncate_text($pool->getDescription(), 800) ?></td>
       <td><?php echo $pool->getCreatedAt() ?></td>
       <td><?php echo $pool->getUpdatedAt() ?></td>
-      <td><?php echo $pool->getCreatedBy() ?></td>
-      <td><?php echo $pool->getUpdatedBy() ?></td>
-      <td><?php echo $pool->getVersion() ?></td>
+      <td><?php echo $pool->getCreator() ?></td>
+      <td><?php echo $pool->getUpdator() ?></td>
     </tr>
   <?php endforeach; ?></tbody>
 </table>

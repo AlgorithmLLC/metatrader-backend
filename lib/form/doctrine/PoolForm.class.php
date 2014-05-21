@@ -27,6 +27,7 @@ class PoolForm extends BasePoolForm
       ->setLabels([
         "name" => "Наименование",
         "description" => "Описание",
+        "buyer_id" => "Покупатель",
       ])
     ;
   }
